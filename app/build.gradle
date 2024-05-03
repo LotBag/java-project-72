@@ -20,6 +20,7 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation('org.junit.jupiter:junit-jupiter')
 
+    implementation("gg.jte:jte:3.1.10")
     implementation("com.h2database:h2:2.2.224")
     implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("gg.jte:jte:3.1.9")
