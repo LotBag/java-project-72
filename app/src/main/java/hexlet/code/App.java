@@ -1,6 +1,9 @@
 package hexlet.code;
 
 import com.zaxxer.hikari.HikariConfig;
+import hexlet.code.controller.RootController;
+import hexlet.code.controller.UrlChecksController;
+import hexlet.code.controller.UrlsController;
 import hexlet.code.util.NamedRoutes;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
