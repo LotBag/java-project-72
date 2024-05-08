@@ -51,7 +51,7 @@
     <div class="container-xl">
         <div class="text-center">
             created by
-            <a href="https://github.com/dariakoval" target="_blank">Darya Koval</a>
+            <a href="https://github.com/LotBag" target="_blank">Oleg Rusianov</a>
         </div>
     </div>
 </footer>
