@@ -24,6 +24,7 @@ import gg.jte.TemplateEngine;
 import io.javalin.rendering.template.JavalinJte;
 
 
+
 @Slf4j
 public class App {
     private static int getPort() {
@@ -58,6 +59,7 @@ public class App {
     public static Javalin getApp() throws IOException, SQLException {
         var hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(getDatabaseUrl());
+        hikariConfig.setDriverClassName(org.postgresql.Driver.class.getName());
 
         var dataSource = new HikariDataSource(hikariConfig);
         String sql = getContentFromStream(getFileFromResourceAsStream("schema.sql"));
