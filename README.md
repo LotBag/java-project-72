@@ -1,5 +1,3 @@
-### Hexlet tests and linter status:
-[![Actions Status](https://github.com/LotBag/java-project-72/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/LotBag/java-project-72/actions)
 # Page analyzer
 
 Page Analyzer is a website that analyzes certain pages for their suitability for SEO.
