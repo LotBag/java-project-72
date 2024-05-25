@@ -39,6 +39,34 @@ public class AppTest {
     }
 
     @Test
+    public void testAddUrlCheck() throws Exception {
+        try (MockWebServer mockServer = new MockWebServer()) {
+            String baseUrl = mockServer.url("/").toString();
+            MockResponse mockResponse = new MockResponse().setBody(readFixture(FIXTURE_NAME_FOR_RESPONSE_BODY));
+            mockServer.enqueue(mockResponse);
+
+            var actualUrl = new Url(baseUrl);
+            UrlsRepository.save(actualUrl);
+
+            JavalinTest.test(app, ((server, client) -> {
+                var response = client.post("/urls/" + actualUrl.getId() + "/checks");
+
+                var actualCheckUrl = UrlChecksRepository.findLatestChecks().get(actualUrl.getId());
+
+                assertThat(actualCheckUrl).isNotNull();
+                assertThat(actualCheckUrl.getStatusCode()).isEqualTo(200);
+                assertThat(actualCheckUrl.getTitle()).isEqualTo("Example Title");
+                assertThat(actualCheckUrl.getH1()).isEqualTo("Example Page");
+                assertThat(actualCheckUrl.getDescription()).isEqualTo("test page for education project");
+
+                assertThat(response.code()).isEqualTo(200);
+                assertThat(response.body()).isNotNull();
+                assertThat(response.body().string()).contains("Example Title");
+            }));
+        }
+    }
+
+    @Test
     public void testRootPage() {
         JavalinTest.test(app, ((server, client) -> {
             var response = client.get("/");
@@ -110,31 +138,4 @@ public class AppTest {
         }));
     }
 
-    @Test
-    public void testAddUrlCheck() throws Exception {
-        try (MockWebServer mockServer = new MockWebServer()) {
-            String baseUrl = mockServer.url("/").toString();
-            MockResponse mockResponse = new MockResponse().setBody(readFixture(FIXTURE_NAME_FOR_RESPONSE_BODY));
-            mockServer.enqueue(mockResponse);
-
-            var actualUrl = new Url(baseUrl);
-            UrlsRepository.save(actualUrl);
-
-            JavalinTest.test(app, ((server, client) -> {
-                var response = client.post("/urls/" + actualUrl.getId() + "/checks");
-
-                var actualCheckUrl = UrlChecksRepository.findLatestChecks().get(actualUrl.getId());
-
-                assertThat(actualCheckUrl).isNotNull();
-                assertThat(actualCheckUrl.getStatusCode()).isEqualTo(200);
-                assertThat(actualCheckUrl.getTitle()).isEqualTo("Example Title");
-                assertThat(actualCheckUrl.getH1()).isEqualTo("Example Page");
-                assertThat(actualCheckUrl.getDescription()).isEqualTo("test page for education project");
-
-                assertThat(response.code()).isEqualTo(200);
-                assertThat(response.body()).isNotNull();
-                assertThat(response.body().string()).contains("Example Title");
-            }));
-        }
-    }
 }
