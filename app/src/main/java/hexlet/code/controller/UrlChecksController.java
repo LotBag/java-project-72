@@ -21,21 +21,28 @@ public class UrlChecksController {
                 .orElseThrow(() -> new NotFoundResponse("Url not found"));
 
         String urlName = url.getName();
-        HttpResponse<String> response = Unirest.get(urlName).asString();
-        Document document = Jsoup.parse(response.getBody());
+        try {
+            HttpResponse<String> response = Unirest.get(urlName).asString();
+            Document document = Jsoup.parse(response.getBody());
 
-        int statusCode = response.getStatus();
-        String title = document.title();
+            int statusCode = response.getStatus();
+            String title = document.title();
 
-        Element h1Element = document.selectFirst("h1");
-        String h1 = h1Element != null ? h1Element.text() : "";
+            Element h1Element = document.selectFirst("h1");
+            String h1 = h1Element != null ? h1Element.text() : "";
 
-        String description = document.getElementsByAttributeValue("name", "description").attr("content");
+            String description = document.getElementsByAttributeValue("name", "description").attr("content");
 
-        UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description, urlId);
-        UrlChecksRepository.save(urlCheck);
-        ctx.sessionAttribute("flash", "Страница успешно проверена");
-        ctx.sessionAttribute("flash-type", "success");
-        ctx.redirect(NamedRoutes.urlPath(urlId));
+            UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description, urlId);
+            UrlChecksRepository.save(urlCheck);
+            ctx.sessionAttribute("flash", "Страница успешно проверена");
+            ctx.sessionAttribute("flash-type", "success");
+            ctx.redirect(NamedRoutes.urlPath(urlId));
+        } catch (Exception e) {
+            ctx.sessionAttribute("flash", "Приложение больше не падает с Server Error, а выдаёт Flash," +
+                    " что страница недоступна или что-то типа того");
+            ctx.sessionAttribute("flash-type", "danger");
+            ctx.redirect(NamedRoutes.urlPath(urlId));
+        }
     }
 }
