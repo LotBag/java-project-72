@@ -93,6 +93,8 @@ public class AppTest {
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body()).isNotNull();
             assertThat(response.body().string()).contains("https://www.examplename.com");
+            assertThat(UrlsRepository.find("https://www.examplename.com").get().getName())
+                    .isEqualTo("https://www.examplename.com");
         }));
     }
 
@@ -104,6 +106,8 @@ public class AppTest {
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body()).isNotNull();
             assertThat(response.body().string()).contains("https://some-domain.org:8080");
+            assertThat(UrlsRepository.find("https://some-domain.org:8080").get().getName())
+                    .isEqualTo("https://some-domain.org:8080");
         }));
     }
 
