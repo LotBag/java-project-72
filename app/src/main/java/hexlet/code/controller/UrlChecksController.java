@@ -39,8 +39,8 @@ public class UrlChecksController {
             ctx.sessionAttribute("flash-type", "success");
             ctx.redirect(NamedRoutes.urlPath(urlId));
         } catch (Exception e) {
-            ctx.sessionAttribute("flash", "Приложение больше не падает с Server Error, а выдаёт Flash," +
-                    " что страница недоступна или что-то типа того");
+            ctx.sessionAttribute("flash", "Приложение больше не падает с Server Error, а выдаёт Flash,"
+                    + " что страница недоступна или что-то типа того");
             ctx.sessionAttribute("flash-type", "danger");
             ctx.redirect(NamedRoutes.urlPath(urlId));
         }
